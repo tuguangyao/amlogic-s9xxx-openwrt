@@ -25,7 +25,8 @@ on:
         type: choice
         options:
           - all          
-          - s905d          
+          - s905d
+          - s905d_s905w
           - s905w          
       openwrt_kernel:
         description: "Select kernel version"
