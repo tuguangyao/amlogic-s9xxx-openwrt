@@ -252,7 +252,7 @@ jobs:
 
       - name: Packaging OpenWrt
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        uses: ophub/amlogic-s9xxx-openwrt@main
+        uses: tuguangyao/amlogic-s9xxx-openwrt@N1_S905W
         with:
           openwrt_path: openwrt/output/*rootfs.tar.gz
           openwrt_ip: ${{ inputs.openwrt_ip }}
@@ -276,7 +276,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ### OpenWrt Image information
-            - Default IP: `192.168.1.1`
+            - Default IP: `10.0.0.136`
             - Default username: `root`
             - Default password: `password`
             - Default WIFI name: `OpenWrt`
