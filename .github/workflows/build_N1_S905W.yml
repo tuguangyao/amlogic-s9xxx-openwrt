@@ -3,7 +3,7 @@
 # Description: Build OpenWrt system image
 #============================================================================================
 
-name: build_N1_S905W
+name: Build N1_S905W image
 
 on:
   repository_dispatch:
@@ -24,10 +24,10 @@ on:
         default: "s905d_s905w"
         type: choice
         options:
-          - all          
-          - s905d
-          - s905d_s905w
-          - s905w          
+          - all
+          - s905d          
+          - s905d_s905w  
+          - S905w
       openwrt_kernel:
         description: "Select kernel version"
         required: false
@@ -252,7 +252,7 @@ jobs:
 
       - name: Packaging OpenWrt
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        uses: tuguangyao/amlogic-s9xxx-openwrt@main
+        uses: ophub/amlogic-s9xxx-openwrt@main
         with:
           openwrt_path: openwrt/output/*rootfs.tar.gz
           openwrt_ip: ${{ inputs.openwrt_ip }}
