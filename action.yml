@@ -37,7 +37,7 @@ inputs:
   openwrt_ip:
     description: "Set the rootfs IP address."
     required: false
-    default: "192.168.1.1"
+    default: "10.0.0.136"
   builder_name:
     description: "Set OpenWrt builder signature."
     required: false
