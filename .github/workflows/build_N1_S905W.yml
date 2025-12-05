@@ -252,7 +252,7 @@ jobs:
 
       - name: Packaging OpenWrt
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        uses: tuguangyao/amlogic-s9xxx-openwrt@N1_S905W
+        uses: tuguangyao/amlogic-s9xxx-openwrt@main
         with:
           openwrt_path: openwrt/output/*rootfs.tar.gz
           openwrt_ip: ${{ inputs.openwrt_ip }}
