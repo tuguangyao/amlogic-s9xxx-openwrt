@@ -170,7 +170,11 @@ CONFIG_TARGET_UBIFS_FREE_SPACE_FIXUP=y
 CONFIG_TARGET_UBIFS_JOURNAL_SIZE=""
 CONFIG_TARGET_SERIAL="ttyS0"
 # CONFIG_TARGET_IMAGES_GZIP is not set
-
+CONFIG_FEED_passwall_packages=y
+CONFIG_FEED_passwall_luci=y
+CONFIG_PACKAGE_luci-app-passwall=y
+CONFIG_PACKAGE_luci-i18n-passwall-zh-cn=y
+CONFIG_PACKAGE_luci-app-openclash=y
 #
 # Image Options
 #
