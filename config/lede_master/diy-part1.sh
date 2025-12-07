@@ -9,4 +9,4 @@
 wget https://github.com/vernesong/OpenClash/archive/master.zip
 ## 解压
 unzip master.zip
-cp -r OpenClash-master/luci-app-openclash packag/
+cp -r OpenClash-master/luci-app-openclash package/
