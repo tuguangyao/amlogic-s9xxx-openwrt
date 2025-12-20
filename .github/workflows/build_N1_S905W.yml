@@ -12,11 +12,11 @@ on:
       source_branch:
         description: "Select the source branch"
         required: false
-        default: "immortalwrt_openwrt-24.10"
+        default: "immortalwrt_openwrt-25.12"
         type: choice
         options:
-          - openwrt_openwrt-24.10
-          - immortalwrt_openwrt-24.10
+          - openwrt_openwrt-25.12
+          - immortalwrt_openwrt-25.12
           - lede_master
       openwrt_board:
         description: "Select device board"
@@ -179,7 +179,7 @@ jobs:
           # Clone source code
           git clone -q --single-branch --depth=1 --branch=${REPO_BRANCH} ${REPO_URL} openwrt
           ln -sf /builder/openwrt ${{ github.workspace }}/openwrt
-          ln -sf /builder/openwrt /home/runner/work/_actions/tuguangyao/amlogic-s9xxx-openwrt/N1_S905W/openwrt
+          ln -sf /builder/openwrt /home/runner/work/_actions/dgnanhe/amlogic-s9xxx-openwrt/main/openwrt
 
           # Set output information
           echo "build_tag=OpenWrt_${{ inputs.source_branch }}_${{ inputs.openwrt_storage }}_$(date +"%Y.%m")" >> ${GITHUB_ENV}
@@ -195,8 +195,6 @@ jobs:
           [[ -f "${FEEDS_CONF}" ]] && cp -f ${FEEDS_CONF} openwrt/feeds.conf.default
           chmod +x ${DIY_P1_SH}
           cd openwrt/
-          echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages.git;main" >> "feeds.conf.default"
-          echo "src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
           ${{ github.workspace }}/${DIY_P1_SH}
 
       - name: Update feeds
@@ -290,7 +288,7 @@ jobs:
 
       - name: Packaging OpenWrt
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        uses: tuguangyao/amlogic-s9xxx-openwrt@N1_S905W
+        uses: dgnanhe/amlogic-s9xxx-openwrt@main
         with:
           openwrt_path: openwrt/output/*rootfs.tar.gz
           openwrt_ip: ${{ inputs.openwrt_ip }}
