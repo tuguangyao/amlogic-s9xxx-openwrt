@@ -68,7 +68,7 @@ on:
       openwrt_ip:
         description: "Set OpenWrt default IP address."
         required: false
-        default: "10.0.0.136"
+        default: "10.0.0.138"
       use_ccache:
         description: "Auto use ccache."
         required: false
@@ -312,7 +312,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ### OpenWrt Image information
-            - Default IP: `10.0.0.136`
+            - Default IP: `10.0.0.138`
             - Default username: `root`
             - Default password: `password`
             - Default WIFI name: `OpenWrt`
