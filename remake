@@ -111,7 +111,7 @@ uboot_meson_sm1=("x96maxplus.bin" "ugoos-x3.bin" "tx3-qz.bin" "tx3-bz.bin" "skyw
 uboot_meson_gxbb=("p201.bin" "s905.bin")
 
 # Set OpenWrt default IP address
-openwrt_ip="192.168.1.1"
+openwrt_ip="10.0.0.138"
 ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 
 # Initialize the build device
@@ -977,7 +977,7 @@ refactor_rootfs() {
     mkdir -p .reserved boot run
 
     # Set default IP address
-    [[ "${openwrt_ip}" != "192.168.1.1" && -f "bin/config_generate" ]] && {
+    [[ "${openwrt_ip}" != "10.0.0.138" && -f "bin/config_generate" ]] && {
         sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${openwrt_ip}\"}/" bin/config_generate
     }
 
