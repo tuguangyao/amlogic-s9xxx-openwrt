@@ -9,7 +9,7 @@
 # ------------------------------- Main source started -------------------------------
 #
 # Set default IP address
-default_ip="10.0.0.136"
+default_ip="10.0.0.138"
 ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 # Modify default IP if an argument is provided and it matches the IP format
 [[ -n "${1}" && "${1}" != "${default_ip}" && "${1}" =~ ${ip_regex} ]] && {
