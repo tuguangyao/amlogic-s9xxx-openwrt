@@ -5,6 +5,8 @@
 #mv -f package-temp/luci-app-amlogic/luci-app-amlogic package/
 #rm -rf package-temp
 # Add luci-app-openclash
+sed -i '/src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages.git;main/d' .config
+sed -i '/src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;main/d' .config
 ## 下载OpenClash
 wget https://github.com/vernesong/OpenClash/archive/master.zip
 ## 解压
