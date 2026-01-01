@@ -15,11 +15,13 @@ on:
         default: "immortalwrt_openwrt-24.10"
         type: choice
         options:
+          - openwrt_main
           - openwrt_openwrt-24.10
           - openwrt_openwrt-25.12
+          - lede_master
+          - immortalwrt_master
           - immortalwrt_openwrt-24.10
           - immortalwrt_openwrt-25.12
-          - lede_master
       openwrt_board:
         description: "Select device board"
         required: false
