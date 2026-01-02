@@ -56,6 +56,8 @@ git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 # ------------------------------- Other ends -------------------------------
 #删除库中的插件，使用自定义源中的包。
 rm -rf feeds/luci/themes/luci-theme-argon
+rm -rf feeds/luci/themes/luci-theme-openwrt-2020
+rm -rf feeds/luci/themes/luci-theme-openwrt
 rm -rf feeds/luci/applications/luci-app-argon-config
 
 # Add packages
