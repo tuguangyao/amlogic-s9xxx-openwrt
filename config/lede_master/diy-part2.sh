@@ -29,7 +29,8 @@ sed -i "s|DISTRIB_REVISION='.*'|DISTRIB_REVISION='R$(date +%Y.%m.%d)'|g" package
 echo "DISTRIB_SOURCEREPO='github.com/coolsnowwolf/lede'" >>package/base-files/files/etc/openwrt_release
 echo "DISTRIB_SOURCECODE='lede'" >>package/base-files/files/etc/openwrt_release
 echo "DISTRIB_SOURCEBRANCH='master'" >>package/base-files/files/etc/openwrt_release
-
+sed -i 's/192.168.1.1/10.0.0.138/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/10.0.0.138/g' package/base-files/luci/bin/config_generate
 # Set ccache
 # Remove existing ccache settings
 sed -i '/CONFIG_DEVEL/d' .config
