@@ -12,4 +12,4 @@ echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;ma
 wget https://github.com/vernesong/OpenClash/archive/master.zip
 ## 解压
 unzip master.zip
-cp -r OpenClash-master/luci-app-openclash package/
+cp -r OpenClash-master/luci-app-openclash packag/
