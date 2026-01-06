@@ -60,6 +60,8 @@ git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 #删除库中的插件，使用自定义源中的包。
 rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/luci/applications/luci-app-argon-config
+rm -rf feeds/luci/themes/luci-theme-openwrt-2020
+rm -rf feeds/luci/themes/luci-theme-openwrt
 # Add packages
 #添加主题包
 git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
@@ -71,3 +73,9 @@ git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config package/l
 # 移除 openwrt feeds 过时的luci版本
 # rm -rf feeds/luci/applications/luci-app-passwall
 # git clone https://github.com/xiaorouji/openwrt-passwall package/passwall-luci
+git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall2 package/luci-app-passwall2
+rm -rf feeds/packages/net/v2ray-geodata
+git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/lang/golang
