@@ -3,7 +3,7 @@
 # Description: Build OpenWrt using releases files
 #=====================================================================================
 
-name: Build OpenWrt using releases files
+name: Build OpenWrt_N1_S905W using releases files
 
 on:
   repository_dispatch:
