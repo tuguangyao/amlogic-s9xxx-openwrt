@@ -1,7 +1,7 @@
-#============================================================================================
+#=====================================================================================
 # https://github.com/ophub/amlogic-s9xxx-openwrt
-# Description: Build OpenWrt system image
-#============================================================================================
+# Description: Build OpenWrt using releases files
+#=====================================================================================
 
 name: Build OpenWrt using releases files
 
@@ -12,7 +12,7 @@ on:
       source_branch:
         description: "Select the source branch"
         required: false
-        default: "immortalwrt_openwrt-24.10"
+        default: "openwrt_main"
         type: choice
         options:
           - openwrt_main
@@ -73,11 +73,6 @@ on:
         description: "Set OpenWrt default IP address."
         required: false
         default: "10.0.0.138"
-      use_ccache:
-        description: "Auto use ccache."
-        required: false
-        default: true
-        type: boolean
       openwrt_storage:
         description: "Select image storage type."
         required: false
@@ -97,12 +92,7 @@ on:
           - tuhaiyang
 
 env:
-  FEEDS_CONF: config/${{ inputs.source_branch }}/feeds.conf.default
-  CONFIG_FILE: config/${{ inputs.source_branch }}/config
-  DIY_P1_SH: config/${{ inputs.source_branch }}/diy-part1.sh
-  DIY_P2_SH: config/${{ inputs.source_branch }}/diy-part2.sh
   TZ: Etc/UTC
-  CCACHE_DIR: /builder/openwrt/.ccache
 
 jobs:
   build:
@@ -112,8 +102,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - name: Initialization environment
         id: init
@@ -160,8 +148,8 @@ jobs:
           df -Th
           echo "status=success" >> ${GITHUB_OUTPUT}
 
-      - name: Clone source code [ ${{ inputs.source_branch }} ]
-        id: codes
+      - name: Download OpenWrt [ ${{ inputs.source_branch }} ]
+        id: down
         working-directory: /builder
         if: ${{ steps.init.outputs.status }} == 'success' && !cancelled()
         run: |
@@ -180,118 +168,52 @@ jobs:
           REPO_NAME="${source_branch_input%_*}"
           REPO_BRANCH="${source_branch_input##*_}"
 
-          # Clone source code
-          git clone -q --single-branch --depth=1 --branch=${REPO_BRANCH} ${REPO_URL} openwrt
+          armsr_tarfile_path="openwrt/output"
+          [[ -d "${armsr_tarfile_path}" ]] || mkdir -p ${armsr_tarfile_path}
           ln -sf /builder/openwrt ${{ github.workspace }}/openwrt
           ln -sf /builder/openwrt /home/runner/work/_actions/dgnanhe/amlogic-s9xxx-openwrt/main/openwrt
 
-          # Set output information
+          # Get name (file name) and url (API asset URL)
+          latest_version=$(curl -s \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              https://api.github.com/repos/${{ github.repository }}/releases?per_page=20 | \
+              jq -r --arg RTK "OpenWrt_${{ inputs.source_branch }}_" \
+              --arg BOARD "-rootfs.tar.gz" \
+              '[.[] | select(.tag_name | contains($RTK))] |
+              map(.assets[] | select(.name | endswith($BOARD))) |
+              sort_by(.updated_at) |
+              reverse |
+              .[0] |
+              {data: .updated_at, url: .url, name: .name}')
+
+          [[ -z "${latest_version}" || "${latest_version}" == "null" ]] && {
+              echo "Invalid OpenWrt rootfs download address."
+              exit 1
+          }
+
+          # Get URL and filename separately
+          latest_url="$(echo ${latest_version} | jq -r '.url')"
+          openwrt_filename="$(echo ${latest_version} | jq -r '.name')"
+
+          # Download using API method (add octet-stream header)
+          echo "Downloading: ${openwrt_filename}"
+          curl -fsSL \
+               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/octet-stream" \
+               "${latest_url}" \
+               -o "${armsr_tarfile_path}/${openwrt_filename}"
+          [[ "${?}" -ne "0" ]] && echo "Download failed." && exit 1
+
           echo "build_tag=OpenWrt_${{ inputs.source_branch }}_${{ inputs.openwrt_storage }}_$(date +"%Y.%m")" >> ${GITHUB_ENV}
-          echo -e "REPO_URL: [ ${REPO_URL} ]\nREPO_BRANCH: [ ${REPO_BRANCH} ]\nREPO_NAME: [ ${REPO_NAME} ]"
           df -hT ${PWD}
           echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
           echo "REPO_NAME=${REPO_NAME}" >> ${GITHUB_ENV}
           echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
-      - name: Load custom feeds
-        run: |
-          [[ -f "${FEEDS_CONF}" ]] && cp -f ${FEEDS_CONF} openwrt/feeds.conf.default
-          chmod +x ${DIY_P1_SH}
-          cd openwrt/
-          ${{ github.workspace }}/${DIY_P1_SH}
-
-      - name: Update feeds
-        run: cd openwrt/ && ./scripts/feeds update -a
-
-      - name: Install feeds
-        run: cd openwrt/ && ./scripts/feeds install -a
-
-      - name: Load custom configuration
-        run: |
-          [[ -d "files" ]] && mv -f files openwrt/files
-          [[ -e "${CONFIG_FILE}" ]] && cp -f ${CONFIG_FILE} openwrt/.config
-          chmod +x ${DIY_P2_SH}
-          cd openwrt/
-          ${{ github.workspace }}/${DIY_P2_SH} "${{ inputs.openwrt_ip }}" "${{ inputs.use_ccache }}"
-
-      - name: Download package
-        id: package
-        run: |
-          cd openwrt/
-          make defconfig
-          make download -j8
-          find dl -size -1024c -exec ls -l {} \;
-          find dl -size -1024c -exec rm -f {} \;
-
-      - name: Get OpenWrt source hash
-        id: openwrthash
-        if: ${{ steps.pull.outputs.status }} == 'success' && !cancelled()
-        run: |
-          # Get the latest source hash from the kernel repository
-          repo_path="$(echo "${{ env.REPO_URL }}" | awk -F"github.com/" '{print $2}')"
-          api_url="https://api.github.com/repos/${repo_path}/git/ref/heads/${{ env.REPO_BRANCH }}"
-          source_hash=$(curl -fsSL -m 20 \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              ${api_url} |
-              jq -r '.object.sha'
-          )
-          [[ -z "${source_hash}" || "${source_hash}" == "null" ]] && source_hash="${{ github.sha }}"
-          echo "source_hash=${source_hash}" >> ${GITHUB_ENV}
-          echo "status=success" >> ${GITHUB_OUTPUT}
-
-      - name: Cache ccache
-        uses: actions/cache@v4
-        with:
-          path: /builder/openwrt/.ccache
-          key: openwrt-${{ env.REPO_NAME }}-${{ env.source_hash }}
-          restore-keys: |
-            openwrt-${{ env.REPO_NAME }}-
-
-      - name: Compile the OpenWrt
-        id: compile
-        run: |
-          cd openwrt/
-          echo -e "$(nproc) thread compile"
-          make -j$(($(nproc) + 1)) V=s || make -j1 || make -j1 V=s
-
-          echo -e "ccache statistics:"
-          ccache -s 2>/dev/null
-          echo -e "ccache directory size:"
-          du -sh $(pwd)/.ccache 2>/dev/null || echo "No ccache directory."
-
-          echo "status=success" >> ${GITHUB_OUTPUT}
-
-      - name: Clear server space
-        id: clean
-        if: ${{ steps.compile.outputs.status }} == 'success' && !cancelled()
-        run: |
-          # Clean up server space
-          cd openwrt/
-          [[ -d "output" ]] || mkdir output
-          cp -f bin/targets/*/*/*rootfs.tar.gz output/
-          cp -f .config output/config
-          ls -A | grep -vE '^(output|\.ccache)$' | xargs rm -rf || true
-
-          # Set output information
-          df -hT ${PWD}
-          echo "status=success" >> ${GITHUB_OUTPUT}
-
-      - name: Upload OpenWrt to Release
-        uses: ncipollo/release-action@main
-        if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        with:
-          tag: ${{ env.build_tag }}
-          artifacts: openwrt/output/*
-          allowUpdates: true
-          removeArtifacts: false
-          replacesArtifacts: true
-          makeLatest: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Packaging OpenWrt
-        if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
+        if: ${{ steps.down.outputs.status }} == 'success' && !cancelled()
         uses: dgnanhe/amlogic-s9xxx-openwrt@main
         with:
           openwrt_path: openwrt/output/*rootfs.tar.gz
