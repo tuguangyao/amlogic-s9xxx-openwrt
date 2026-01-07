@@ -319,6 +319,7 @@ jobs:
           # Add symbolic link
           [[ -d "/builder/openwrt" ]] || mkdir -p /builder/openwrt
           ln -sf /builder/openwrt /home/runner/work/_actions/dgnanhe/amlogic-s9xxx-openwrt/main/openwrt
+          sed -i 's/192.168.1.1/10.0.0.138/g' /builder/openwrt/package/base-files/files/bin/config_generate
           df -hT ${PWD}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
