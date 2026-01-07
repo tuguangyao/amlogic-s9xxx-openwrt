@@ -65,6 +65,7 @@ error_msg() {
 # Downloading OpenWrt ImageBuilder
 download_imagebuilder() {
     cd ${make_path}
+    sed -i 's/192.168.1.1/10.0.0.138/g' package/base-files/files/bin/config_generate
     echo -e "${STEPS} Start downloading OpenWrt files..."
 
     # Downloading imagebuilder files
