@@ -75,11 +75,11 @@ on:
       kernel_sign:
         description: "Set the kernel custom signature"
         required: false
-        default: "-ophub"
+        default: "-tuhaiyang"
         type: choice
         options:
           - -ophub
-          - -yourname
+          - -tuhaiyang
 
 env:
   TZ: Etc/UTC
