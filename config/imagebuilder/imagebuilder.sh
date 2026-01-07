@@ -84,7 +84,6 @@ download_imagebuilder() {
 adjust_settings() {
     cd ${imagebuilder_path}
     echo -e "${STEPS} Start adjusting .config file settings..."
-    sed -i 's/192.168.1.1/10.0.0.138/g' package/base-files/files/bin/config_generate
 
     # For .config file
     if [[ -s ".config" ]]; then
