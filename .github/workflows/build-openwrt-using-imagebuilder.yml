@@ -15,7 +15,7 @@ on:
       releases_branch:
         description: "Select the releases branch"
         required: false
-        default: "openwrt:24.10.5"
+        default: "immortalwrt:24.10.4"
         type: choice
         options:
           - openwrt:24.10.5
@@ -206,6 +206,7 @@ on:
         options:
           - 5.10.y
           - 5.15.y
+          - 5.15.158
           - 6.1.y
           - 6.6.y
           - 6.12.y
@@ -229,7 +230,7 @@ on:
       kernel_usage:
         description: "Set the tags of the stable kernel."
         required: false
-        default: "stable"
+        default: "flippy"
         type: choice
         options:
           - stable
