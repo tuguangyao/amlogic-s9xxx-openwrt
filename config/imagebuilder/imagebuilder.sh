@@ -185,7 +185,7 @@ rebuild_firmware() {
         jshn kmod-brcmfmac kmod-brcmutil kmod-cfg80211 kmod-mac80211 libjson-script liblucihttp \
         liblucihttp-lua losetup lsattr lsblk lscpu mkf2fs mount-utils openssl-util parted \
         perl-http-date perlbase-file perlbase-getopt perlbase-time perlbase-unicode perlbase-utf8 \
-        pigz ppp ppp-mod-pppoe pv rename resize2fs runc tar tini ttyd tune2fs \
+        pigz ppp ppp-mod-pppoe pv rename resize2fs runc tar tini ttyd tune2fs hysteria \
         uclient-fetch uhttpd uhttpd-mod-ubus unzip uqmi usb-modeswitch uuidgen wget-ssl whereis \
         which wpad-basic wwan xfs-fsck xfs-mkfs xz xz-utils ziptool zoneinfo-asia zoneinfo-core zstd \
         \
