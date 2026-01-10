@@ -6,7 +6,7 @@
 #                https://downloads.immortalwrt.org/releases
 #=====================================================================================
 
-name: Build OpenWrt_N1_S905W using ImageBuilder
+name: Build N1_S905W ImageBuilder
 
 on:
   repository_dispatch:
