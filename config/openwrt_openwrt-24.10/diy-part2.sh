@@ -76,4 +76,4 @@ rm -rf feeds/packages/net/v2ray-geodata
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
-git clone https://github.com/immortalwrt/luci/tree/openwrt-24.10/applications/luci-app-vlmcsd package/luci-app-vlmcsd  
+git clone https://github.com/cokebar/luci-app-vlmcsd package/luci-app-vlmcsd
