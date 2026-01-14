@@ -1,4 +1,4 @@
-7#!/bin/bash
+#!/bin/bash
 #========================================================================================================================
 # https://github.com/ophub/amlogic-s9xxx-openwrt
 # Description: Automatically Build OpenWrt
