@@ -76,5 +76,5 @@ rm -rf feeds/packages/net/v2ray-geodata
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
-git clone --depth 1 https://github.com/tuhaiyang/luci-app-vlmcsd.git package/luci-app-vlmcsd
-git clone --depth 1 https://github.com/tuhaiyang/vlmcsd.git package/vlmcsd
+git clone --depth 1 https://github.com/tuhaiyang/luci-app-vlmcsd.git feeds/luci/applications/luci-app-vlmcsd
+git clone --depth 1 https://github.com/tuhaiyang/vlmcsd.git feeds/packages/net/vlmcsd
