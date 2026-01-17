@@ -333,7 +333,7 @@ jobs:
         run: |
           # Set up compilation source code
           if [[ "${{ inputs.source_branch }}" =~ ^openwrt ]]; then
-              REPO_URL="https://github.com/openwrt/openwrt"
+              REPO_URL="https://github.com/tuhaiyang/openwrt"
           elif [[ "${{ inputs.source_branch }}" =~ ^lede ]]; then
               REPO_URL="https://github.com/coolsnowwolf/lede"
           elif [[ "${{ inputs.source_branch }}" =~ ^immortalwrt ]]; then
