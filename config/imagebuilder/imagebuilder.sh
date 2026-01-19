@@ -131,6 +131,8 @@ custom_packages() {
     [[ "${?}" -eq "0" ]] || error_msg "[ ${amlogic_i18n} ] download failed!"
     echo -e "${INFO} The [ ${amlogic_i18n} ] is downloaded successfully."
 
+    curl -fsSOJL https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.1.1-1/luci-app-passwall2_26.1.1-r1_all.ipk
+    curl -fsSOJL https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.1.1-1/luci-i18n-passwall2-zh-cn_26.1.1_all.ipk
     # Download other luci-app-xxx
     # ......
 
@@ -198,6 +200,7 @@ rebuild_firmware() {
         luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn \
         luci-theme-argon luci-app-argon-config luci-i18n-argon-config-zh-cn \
         luci-app-upnp luci-i18n-upnp-zh-cn \
+        luci-i18n-passwall2-zh-cn luci-app-passwall2 \
         \
         ${config_list} \
         "
