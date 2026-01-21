@@ -131,8 +131,8 @@ custom_packages() {
     [[ "${?}" -eq "0" ]] || error_msg "[ ${amlogic_i18n} ] download failed!"
     echo -e "${INFO} The [ ${amlogic_i18n} ] is downloaded successfully."
 
-    curl -fsSOJL https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.1.1-1/luci-app-passwall2_26.1.1-r1_all.ipk
-    curl -fsSOJL https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.1.1-1/luci-i18n-passwall2-zh-cn_26.1.1_all.ipk
+    curl -fsSOJL https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.1.19-1/luci-app-passwall2_26.1.19-r1_all.ipk
+    curl -fsSOJL https://github.com/Openwrt-Passwall/openwrt-passwall2/releases/download/26.1.19-1/luci-i18n-passwall2-zh-cn_26.1.19_all.ipk
     # Download other luci-app-xxx
     # ......
 
