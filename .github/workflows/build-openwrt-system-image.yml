@@ -337,7 +337,7 @@ jobs:
           elif [[ "${{ inputs.source_branch }}" =~ ^lede ]]; then
               REPO_URL="https://github.com/coolsnowwolf/lede"
           elif [[ "${{ inputs.source_branch }}" =~ ^immortalwrt ]]; then
-              REPO_URL="https://github.com/immortalwrt/immortalwrt"
+              REPO_URL="https://github.com/tuhaiyang/immortalwrt"
           else
               echo "Unknown source code repository."
               exit 1
